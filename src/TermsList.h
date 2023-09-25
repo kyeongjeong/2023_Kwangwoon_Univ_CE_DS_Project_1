@@ -6,7 +6,6 @@ class TermsLIST
 private:
 	TermsListNode* head;
 
-
 public:
 	TermsLIST();
 	~TermsLIST();
@@ -14,6 +13,8 @@ public:
 	TermsListNode* getHead();
 
 	// insert
+	bool insertNode(string termsType);
+
 	// search
 	// delete
 };

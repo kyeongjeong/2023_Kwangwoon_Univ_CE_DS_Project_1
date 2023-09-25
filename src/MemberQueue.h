@@ -1,10 +1,14 @@
 #pragma once
 #include "MemberQueueNode.h"
+#include <iostream>
 
 class MemberQueue
 {
 private:
-
+	MemberQueueNode* first;
+	MemberQueueNode* rear;
+	int size;
+	int capacity;
 
 public:
 	MemberQueue();
@@ -12,8 +16,7 @@ public:
 
 	bool empty();
 	bool full();
-	void push();
+	void push(string mName, int mAge, string infoDate, string termsType);
 	MemberQueueNode pop();
-	MemberQueueNode front();
+	MemberQueueNode* front();
 };
-
