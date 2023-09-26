@@ -1,5 +1,7 @@
 #pragma once
 #include "NameBSTNode.h"
+#include <fstream>
+using namespace std;
 
 class NameBST
 {
@@ -12,9 +14,9 @@ public:
 
 	NameBSTNode* getRoot();
 
-	void insertBSTNode();
-
-	// search
-	// print
-	// delete
+	void insertBSTNode(string mName, int mAge, string infoDate, string expireDate, string termsType);
+	NameBSTNode* searchBSTNode(string mName);
+	NameBSTNode* searchPrevBSTNode(NameBSTNode* curNode);
+	void printBSTNode(NameBSTNode* curNode, ofstream* flog);
+	void deleteBSTNode(string argType, string arg);
 };

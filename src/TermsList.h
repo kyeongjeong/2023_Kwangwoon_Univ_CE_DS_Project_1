@@ -13,9 +13,7 @@ public:
 
 	TermsListNode* getHead();
 
-	// insert
 	void insertListNode(string mName, int mAge, string infoDate, string expireDate, string termsType);
-
-	// search
+	TermsListNode* searchListNode(string termsType);
 	// delete
 };

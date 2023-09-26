@@ -32,6 +32,8 @@ public:
 	void setRight(TermsBSTNode* right)		{ this->right = right; }
 	void setExpireDate(string expireDate) 	{ this->expireDate = expireDate; }
 
-	string getExpireDate() 	{ return this->expireDate; }
-	string getInfoDate()	{ return this->infoDate; }
+	string getMName()		{ return mName; }
+	int getMAge()			{ return mAge; }
+	string getInfoDate()	{ return infoDate; }
+	string getExpireDate()	{ return expireDate; }
 };

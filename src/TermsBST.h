@@ -2,6 +2,7 @@
 #include "TermsBSTNode.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 class TermsBST
@@ -15,10 +16,8 @@ public:
 
 	TermsBSTNode* getRoot();
 
-	void insertBSTNode(TermsBSTNode* newNode, string termsType);
-
-	// print
-	void printBSTNode();
+	void insertBSTNode(TermsBSTNode* newNode);
+	void printBSTNode(TermsBSTNode* curNode, ofstream* flog);
 
 	// delete
 

@@ -43,10 +43,12 @@ void Manager::run(const char* command)
                 return;
         }
         else if(cmd == "SEARCH") {
-
+            if(!SEARCH(&nBST)) 
+                return;
         }
         else if(cmd == "PRINT") {
-
+            if(!PRINT(&nBST, &tLIST))
+            return;
         }
         else if(cmd == "DELETE") {
 
@@ -162,7 +164,6 @@ bool Manager::ADD(MemberQueue* mQueue) {
     return true;
 }
 
-// QPOP
 bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
 
     if((*mQueue).empty()) {
@@ -170,7 +171,7 @@ bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
         return false;
     }
 
-    MemberQueueNode* curNode;
+    MemberQueueNode* curNode = (*mQueue).front();
     while(curNode != NULL) {
         
         curNode = (*mQueue).front();
@@ -178,10 +179,10 @@ bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
             MemberQueueNode popNode = mQueue->pop();
             string expireDate = calculateExpireDate(popNode.getInfoDate(), popNode.getTermsType());
             tLIST->insertListNode(popNode.getMName(), popNode.getMAge(), popNode.getInfoDate(), expireDate, popNode.getTermsType());
-            nBST->insertBSTNode();
+            nBST->insertBSTNode(popNode.getMName(), popNode.getMAge(), popNode.getInfoDate(), expireDate, popNode.getTermsType());
         }
     }
-
+    PrintSuccess("QPOP");
     return true;
 }
 
@@ -208,8 +209,59 @@ string Manager::calculateExpireDate(string infoDate, string termsType) {
 	return expireDate;
 }
 
-// SEARCH
+bool Manager::SEARCH(NameBST* nBST) {
 
-// PRINT
+    string mName;
+    fcmd >> mName;
+
+    NameBSTNode* curNode = nBST->searchBSTNode(mName);
+    if(curNode == NULL) {
+        PrintErrorCode(400);
+        return true;
+    }
+    string searchMemberInfo = curNode->getMName() + "/" + to_string(curNode->getMAge()) + "/" + curNode->getInfoDate() + "/" + curNode->getExpireDate();
+    flog << "===== SEARCH =====" << endl; 
+    flog << searchMemberInfo << endl;
+    flog << "===============" << endl << endl;
+    return true;
+}
+
+bool Manager::PRINT(NameBST* nBST, TermsLIST* tLIST) {
+
+    string argType;
+    fcmd >> argType;
+
+    if(argType == "NAME") {
+
+        if(nBST->getRoot() == NULL) {
+            PrintErrorCode(500);
+            return true;
+        }
+        flog << "===== PRINT =====" << endl;
+        flog << "Name_BST" << endl;
+        nBST->printBSTNode(nBST->getRoot(), &flog);
+        flog << "===============" << endl << endl;
+    }
+    else if((argType == "A") || (argType == "B") || (argType == "C") || (argType == "D")) {
+
+        if((tLIST->getHead() == NULL) || (tLIST->searchListNode(argType) == NULL)) {
+            PrintErrorCode(500);
+            return true;
+        }
+        flog << "===== PRINT =====" << endl;
+        flog << "Terms_BST " << argType << endl;
+
+        TermsListNode* tListNode = tLIST->searchListNode(argType);
+        TermsBST* tBST = tListNode->getTBST();
+        tBST->printBSTNode(tBST->getRoot(), &flog);
+
+        flog << "===============" << endl << endl;
+    }
+    else {
+        PrintErrorCode(500);
+        return true;
+    }
+    return true;
+}
 
 // DELETE

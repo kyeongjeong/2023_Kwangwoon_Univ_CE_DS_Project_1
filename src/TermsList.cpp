@@ -14,7 +14,6 @@ TermsListNode* TermsLIST::getHead()
 	return head;
 }
 
-// insert
 void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string expireDate, string termsType) {
 
 	TermsListNode* curNode = head;
@@ -24,7 +23,7 @@ void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string e
 			curNode->setMCount();
 
 			TermsBSTNode* newBSTNode = new TermsBSTNode(mName, mAge, infoDate, expireDate);
-			curNode->getTBST()->insertBSTNode(newBSTNode, expireDate);
+			curNode->getTBST()->insertBSTNode(newBSTNode);
 
 			return;
 		}
@@ -37,7 +36,7 @@ void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string e
 
 	if(head == NULL) {
 		head = newListNode;
-		head->getTBST()->insertBSTNode(newBSTNode, expireDate);
+		head->getTBST()->insertBSTNode(newBSTNode);
 		return;
 	}
 
@@ -46,11 +45,21 @@ void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string e
 		curNode = curNode->getNext();
 	
 	curNode->setNext(newListNode);
-	curNode->getTBST()->insertBSTNode(newBSTNode, expireDate);
+	curNode = curNode->getNext();
+	curNode->getTBST()->insertBSTNode(newBSTNode);
 
 	return;
 }
 
-// search
+TermsListNode* TermsLIST::searchListNode(string termsType) {
+
+	TermsListNode* curNode = head;
+	while(curNode != NULL) {
+		if(curNode->getTermsType() == termsType)
+			return curNode;
+		curNode = curNode->getNext();
+	}
+	return NULL;
+}
 
 // delete

@@ -16,18 +16,23 @@ private:
 	
 
 public:
-	NameBSTNode() {
+	NameBSTNode(string mName, int mAge, string infoDate, string expireDate, string termsType) {
 		this->mName = mName;
 		this->mAge = mAge;
 		this->infoDate = infoDate;
 		this->expireDate = expireDate;
-	
+		this->termsType = termsType;
 	}
 	~NameBSTNode() {}
 
-	NameBSTNode*	getLeft()			{ return left; }
-	NameBSTNode*	getRight()			{ return right; }
+	NameBSTNode* getLeft()	{ return left; }
+	NameBSTNode* getRight()	{ return right; }
+	string getMName()		{ return mName; }
+	int getMAge()			{ return mAge; }
+	string getInfoDate()	{ return infoDate; }
+	string getExpireDate()	{ return expireDate; }
+	string getTermsType()	{ return termsType; }
 
-	void setLeft(NameBSTNode* left)						{ this->left = left; }
-	void setRight(NameBSTNode* right)					{ this->right = right; }
+	void setLeft(NameBSTNode* left)		{ this->left = left; }
+	void setRight(NameBSTNode* right)	{ this->right = right; }
 };

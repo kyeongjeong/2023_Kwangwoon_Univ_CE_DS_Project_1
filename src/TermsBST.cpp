@@ -15,9 +15,7 @@ TermsBSTNode* TermsBST::getRoot()
 	return root;
 }
 
-
-// insert
-void TermsBST::insertBSTNode(TermsBSTNode* newNode, string expireDate) {
+void TermsBST::insertBSTNode(TermsBSTNode* newNode) {
 	
 	if(root == NULL) {
 		root = newNode;
@@ -44,11 +42,17 @@ void TermsBST::insertBSTNode(TermsBSTNode* newNode, string expireDate) {
 	}
 }
 
-void TermsBST::printBSTNode() {
-	
-}
+void TermsBST::printBSTNode(TermsBSTNode* curNode, ofstream* flog) {
 
-// delete
+	string memberInfo;
+	if(curNode != NULL) {
+
+		printBSTNode(curNode->getLeft(), flog);
+		memberInfo = curNode->getMName() + "/" + to_string(curNode->getMAge()) + "/" + curNode->getInfoDate() + "/" + curNode->getExpireDate();
+		(*flog) << memberInfo << endl;
+		printBSTNode(curNode->getRight(), flog);
+	}
+}
 
 int TermsBST::compareDate(string dateStr1, string dateStr2) {
 
