@@ -25,9 +25,11 @@ public:
 
 	bool LOAD(MemberQueue* mQueue);
 	bool ADD(MemberQueue* mQueue);
-	bool QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST,TermsBST* tBST);
+	bool QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST);
 
 	// SEARCH
 	// PRINT
 	// DELETE
+
+	string calculateExpireDate(string infoDate, string termsType);
 };

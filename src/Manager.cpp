@@ -22,7 +22,6 @@ void Manager::run(const char* command)
 
     MemberQueue mQueue;
     NameBST nBST;
-    TermsBST tBST;
     TermsLIST tLIST;
 
     // Run command
@@ -40,7 +39,7 @@ void Manager::run(const char* command)
                 return;
         }
         else if(cmd == "QPOP") {
-            if(!QPOP(&mQueue, &nBST, &tLIST, &tBST)) 
+            if(!QPOP(&mQueue, &nBST, &tLIST)) 
                 return;
         }
         else if(cmd == "SEARCH") {
@@ -75,7 +74,6 @@ void Manager::PrintErrorCode(int num)
     flog << "===============" << endl << endl;
 }
 
-// LOAD
 bool Manager::LOAD(MemberQueue* mQueue) {
 
     ifstream fdata;
@@ -104,15 +102,14 @@ bool Manager::LOAD(MemberQueue* mQueue) {
     flog << "===== LOAD =====" << endl; 
     while(curNode != NULL) {
 
-        flog << curNode->getmName() << "/" << curNode->getmAge() << "/" << curNode->getinfoDate() << "/" << curNode->gettermsType() << endl;
-        curNode = curNode->next;
+        flog << curNode->getMName() << "/" << curNode->getMAge() << "/" << curNode->getInfoDate() << "/" << curNode->getTermsType() << endl;
+        curNode = curNode->getNext();
     }
     flog << "===============" << endl << endl;
 
     return true;
 }
 
-// ADD
 bool Manager::ADD(MemberQueue* mQueue) {
     
     int mAge;
@@ -166,7 +163,7 @@ bool Manager::ADD(MemberQueue* mQueue) {
 }
 
 // QPOP
-bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST,TermsBST* tBST) {
+bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
 
     if((*mQueue).empty()) {
         PrintErrorCode(300);
@@ -179,17 +176,36 @@ bool Manager::QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST,TermsBST
         curNode = (*mQueue).front();
         if(curNode != NULL) {
             MemberQueueNode popNode = mQueue->pop();
-            tLIST->insertNode(popNode.gettermsType());
+            string expireDate = calculateExpireDate(popNode.getInfoDate(), popNode.getTermsType());
+            tLIST->insertListNode(popNode.getMName(), popNode.getMAge(), popNode.getInfoDate(), expireDate, popNode.getTermsType());
+            nBST->insertBSTNode();
         }
     }
 
-    TermsListNode* cur = (*tLIST).getHead();
-    while(cur != NULL) {
-        cout << cur->getTermsType() << " " << cur->getMCount() << endl;
-        cur = cur->getNext();
+    return true;
+}
+
+string Manager::calculateExpireDate(string infoDate, string termsType) {
+
+	int year, month, day;
+    sscanf(infoDate.c_str(), "%d-%d-%d", &year, &month, &day);
+
+	int monthsToAdd = 0;
+    if (termsType == "A") {
+        monthsToAdd = 6;
+    } else if (termsType == "B") {
+        monthsToAdd = 12;
+    } else if (termsType == "C") {
+        monthsToAdd = 24;
+    } else if (termsType == "D") {
+        monthsToAdd = 36;
     }
 
-    return true;
+	year += (month + monthsToAdd - 1) / 12;
+    month = (month + monthsToAdd - 1) % 12 + 1;
+
+	string expireDate = to_string(year) + "-" + (month < 10 ? "0" : "") + to_string(month) + "-" + (day < 10 ? "0" : "") + to_string(day); 
+	return expireDate;
 }
 
 // SEARCH

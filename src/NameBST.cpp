@@ -14,7 +14,10 @@ NameBSTNode* NameBST::getRoot()
 	return root;
 }
 
-// insert
+void NameBST::insertBSTNode() {
+
+	
+}
 
 // search
 

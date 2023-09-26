@@ -9,10 +9,9 @@ private:
 	int mAge;
 	string infoDate;
 	string termsType;
+	MemberQueueNode* next;
 
 public:
-
-	MemberQueueNode* next;
 
 	MemberQueueNode(string mName, int mAge, string infoDate, string termsType) {
 
@@ -22,22 +21,13 @@ public:
 		this->termsType = termsType;
 		this->next = NULL;
 	}
-	
 	~MemberQueueNode() {}
 
-	string getmName() {
-		return this->mName;
-	}
+	string getMName() 			{ return mName; }
+	int getMAge() 				{ return mAge; }
+	string getInfoDate() 		{ return infoDate; }
+	string getTermsType() 		{ return termsType; }
+	MemberQueueNode* getNext() 	{ return next; }
 
-	int getmAge() {
-		return this->mAge;
-	}
-
-	string getinfoDate() {
-		return this->infoDate;
-	}
-
-	string gettermsType() {
-		return this->termsType;
-	}
+	void setNext(MemberQueueNode* next)	{ this->next = next; }
 };

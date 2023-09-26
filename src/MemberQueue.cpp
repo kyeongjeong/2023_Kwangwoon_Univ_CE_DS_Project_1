@@ -33,7 +33,7 @@ void MemberQueue::push(string mName, int mAge, string infoDate, string termsType
         return;
     }
 
-    (this->rear)->next = newNode;
+    (this->rear)->setNext(newNode);
     this->rear = newNode;
     ++size;
 }
@@ -44,11 +44,11 @@ MemberQueueNode MemberQueue::pop()
     --size;
 
     if(!empty()) 
-        first = first->next; 
+        first = first->getNext(); 
     else 
         first = NULL; 
 
-    MemberQueueNode* tempNode = new MemberQueueNode(curNode->getmName(), curNode->getmAge(), curNode->getinfoDate(), curNode->gettermsType());
+    MemberQueueNode* tempNode = new MemberQueueNode(curNode->getMName(), curNode->getMAge(), curNode->getInfoDate(), curNode->getTermsType());
     delete curNode;
     return *tempNode;
 }

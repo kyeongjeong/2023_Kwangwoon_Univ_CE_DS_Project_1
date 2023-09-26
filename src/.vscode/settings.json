@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "ostream": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "system_error": "cpp",
+        "*.tcc": "cpp"
     }
 }

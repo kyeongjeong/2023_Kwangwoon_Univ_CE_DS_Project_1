@@ -12,7 +12,8 @@ public:
 
 	NameBSTNode* getRoot();
 
-	// insert
+	void insertBSTNode();
+
 	// search
 	// print
 	// delete

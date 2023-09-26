@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "TermsBSTNode.h"
+#include "TermsBST.h"
 using namespace std;
 
 class TermsListNode
@@ -8,24 +8,25 @@ class TermsListNode
 private:
 	string termsType;
 	int mCount;
-	TermsBSTNode* pTermsBSTNode;
 	TermsListNode* next;
-
+	TermsBST* tBST;
 
 public:
 	TermsListNode(string termsType) {
 
 		this->termsType = termsType;
 		this->mCount = 0;
-		this->pTermsBSTNode = NULL;
 		this->next = NULL;
+
+		tBST = new TermsBST();
 	}
 	~TermsListNode() {}
 
-	TermsListNode* getNext() { return next; }
-	string getTermsType() { return termsType; }
-	int getMCount() { return mCount; }
-
-	void setNext(TermsListNode* next)	 { this->next = next; }
-	void setMCount() { ++this->mCount; }
+	TermsListNode* getNext()	{ return next; }
+	string getTermsType()		{ return termsType; }
+	int getMCount() 			{ return mCount; }
+	TermsBST* getTBST() 		{ return tBST; }
+ 
+	void setNext(TermsListNode* next)					{ this->next = next; }
+	void setMCount() 									{ ++this->mCount; }
 };
