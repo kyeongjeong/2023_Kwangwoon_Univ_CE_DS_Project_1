@@ -214,7 +214,7 @@ bool Manager::SEARCH(NameBST* nBST) {
     string mName;
     fcmd >> mName;
 
-    NameBSTNode* curNode = nBST->searchBSTNode(mName);
+    NameBSTNode* curNode = nBST->searchBSTNode("NAME", mName);
     if(curNode == NULL) {
         PrintErrorCode(400);
         return true;

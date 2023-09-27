@@ -25,6 +25,7 @@ void TermsBST::insertBSTNode(TermsBSTNode* newNode) {
 	TermsBSTNode* curNode = root;
 	while(curNode != NULL) {
 
+		//if(newNode->getExpireDate() < curNode->getExpireDate()) {
 		if(compareDate(newNode->getExpireDate(), curNode->getExpireDate()) < 0) {
 			if(curNode->getLeft() == NULL) {
 				curNode->setLeft(newNode);

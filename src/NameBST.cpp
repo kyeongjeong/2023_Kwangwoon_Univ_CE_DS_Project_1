@@ -42,21 +42,37 @@ void NameBST::insertBSTNode(string mName, int mAge, string infoDate, string expi
 	}
 }
 
-NameBSTNode* NameBST::searchBSTNode(string mName) {
+NameBSTNode* NameBST::searchBSTNode(string argType, string arg) {
 
 	NameBSTNode* curNode = root;
-	while(curNode != NULL) {
 
-		if(mName < curNode->getMName()) 
-			curNode = curNode->getLeft();
+	if(argType == "NAME") {
 
-		else if(mName > curNode->getMName())	
-			curNode = curNode->getRight();
+		while(curNode != NULL) {
 
-		else 
-			return curNode;
+			if(arg < curNode->getMName()) 
+				curNode = curNode->getLeft();
+			else if(arg > curNode->getMName())	
+				curNode = curNode->getRight();
+			else 
+				return curNode;
+		}
+		return NULL;
+	}	
+
+	if(argType == "DATE") {
+
+		while(curNode != NULL) {
+
+			if(arg < curNode->getMName()) 
+				curNode = curNode->getLeft();
+			else if(arg > curNode->getMName())	
+				curNode = curNode->getRight();
+			else 
+				return curNode;
+		}
+		return NULL;
 	}
-	return NULL;	
 }
 
 NameBSTNode* NameBST::searchPrevBSTNode(NameBSTNode* curNode) {
@@ -94,11 +110,11 @@ void NameBST::printBSTNode(NameBSTNode* curNode, ofstream* flog) {
 void NameBST::deleteBSTNode(string argType, string arg) {
 	
 	if(argType == "DATE") {
-
+		;
 	}
 	else if(argType == "NAME") {
 
-		NameBSTNode* curNode = searchBSTNode(arg);
+		NameBSTNode* curNode = searchBSTNode(argType, arg);
 		NameBSTNode* prevNode = searchPrevBSTNode(curNode);
 
 		if((curNode->getLeft() == NULL) && curNode->getRight() == NULL) {
@@ -112,8 +128,66 @@ void NameBST::deleteBSTNode(string argType, string arg) {
 			else if(prevNode->getRight() == curNode)
 				prevNode->setRight(NULL);
 		}
-		else if((curNode->getLeft() == NULL) || curNode->getRight() == NULL) {
-			;
+		else if(curNode->getLeft() == NULL) {
+
+			if(curNode == root)
+				root = curNode->getRight();
+			
+			else if(prevNode->getLeft() == curNode)
+				prevNode->setLeft(curNode->getRight());
+
+			else
+				prevNode->setRight(curNode->getRight());
+		}
+		else if(curNode->getRight() == NULL) {
+			
+			if(curNode == root)
+				root = curNode->getLeft(); 
+			
+			else if(prevNode->getLeft() == curNode)
+				prevNode->setLeft(curNode->getLeft());
+
+			else
+				prevNode->setRight(curNode->getLeft());
+		}
+		else {
+
+			NameBSTNode* minNode = curNode->getRight();
+			NameBSTNode* minPrevNode;
+
+			if(minNode->getLeft() != NULL) {
+				while(minNode->getLeft()->getLeft() != NULL)
+					minNode = minNode->getLeft();
+			}
+
+			if(minNode->getLeft() != NULL) {
+				minPrevNode = minNode;
+				minNode = minNode->getLeft();
+			}
+			else
+				minPrevNode = curNode;
+			
+			if(curNode == root)
+				root = minNode;
+			else {
+
+				if(prevNode->getLeft() == curNode)
+					prevNode->setLeft(minNode);
+				else
+					prevNode->setRight(minNode);
+				
+				if((minNode->getRight() != NULL) && (curNode != minPrevNode)) {
+
+					if(minNode -> getRight() != NULL) {
+
+						minPrevNode->setRight(minNode->getRight());
+						minPrevNode->setLeft(NULL);
+						minNode->setRight(minPrevNode);
+					}
+				}
+			}
+			minNode->setLeft(curNode->getLeft());
+			delete curNode;
 		}
 	}
 	return;
