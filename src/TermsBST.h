@@ -22,5 +22,4 @@ public:
 	// delete
 
 	string calculateExpireDate(string infoDate, string termsType);
-	int compareDate(string dateStr1, string dateStr2);
 };
