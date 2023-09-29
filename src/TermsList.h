@@ -15,5 +15,5 @@ public:
 
 	void insertListNode(string mName, int mAge, string infoDate, string expireDate, string termsType);
 	TermsListNode* searchListNode(string termsType);
-	// delete
+	bool deleteListNode(string argType, string arg);
 };

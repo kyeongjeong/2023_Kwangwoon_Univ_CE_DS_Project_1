@@ -4,6 +4,7 @@
         "stdexcept": "cpp",
         "system_error": "cpp",
         "*.tcc": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "new": "cpp"
     }
 }

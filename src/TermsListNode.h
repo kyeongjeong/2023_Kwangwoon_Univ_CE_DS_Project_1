@@ -27,6 +27,7 @@ public:
 	int getMCount() 			{ return mCount; }
 	TermsBST* getTBST() 		{ return tBST; }
  
-	void setNext(TermsListNode* next)					{ this->next = next; }
-	void setMCount() 									{ ++this->mCount; }
+	void setNext(TermsListNode* next)	{ this->next = next; }
+	void increaseMCount() 				{ ++this->mCount; }
+	void decreaseMCount()				{ --this->mCount; }
 };

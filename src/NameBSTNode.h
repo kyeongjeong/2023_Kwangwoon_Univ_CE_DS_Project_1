@@ -33,6 +33,11 @@ public:
 	string getExpireDate()	{ return expireDate; }
 	string getTermsType()	{ return termsType; }
 
-	void setLeft(NameBSTNode* left)		{ this->left = left; }
-	void setRight(NameBSTNode* right)	{ this->right = right; }
+	void setLeft(NameBSTNode* left)			{ this->left = left; }
+	void setRight(NameBSTNode* right)		{ this->right = right; }
+	void setMName(string mName) 			{ this-> mName = mName; }
+	int setMAge(int mAge)					{ this->mAge = mAge; }
+	void setInfoDate(string infoDate) 		{ this-> infoDate = infoDate; }
+	void setExpireDate(string expireDate) 	{ this-> expireDate = expireDate; }
+	void setTermsType(string termsType) 	{ this-> termsType = termsType; }
 };

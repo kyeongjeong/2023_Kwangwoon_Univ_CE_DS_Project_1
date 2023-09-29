@@ -20,7 +20,7 @@ void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string e
 	while(curNode != NULL) {
 
 		if(curNode->getTermsType() == termsType) {
-			curNode->setMCount();
+			curNode->increaseMCount();
 
 			TermsBSTNode* newBSTNode = new TermsBSTNode(mName, mAge, infoDate, expireDate);
 			curNode->getTBST()->insertBSTNode(newBSTNode);
@@ -31,7 +31,7 @@ void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string e
 	}
 
 	TermsListNode* newListNode = new TermsListNode(termsType);
-	newListNode->setMCount();
+	newListNode->increaseMCount();
 	TermsBSTNode* newBSTNode = new TermsBSTNode(mName, mAge, infoDate, expireDate);
 
 	if(head == NULL) {
@@ -62,4 +62,44 @@ TermsListNode* TermsLIST::searchListNode(string termsType) {
 	return NULL;
 }
 
-// delete
+bool TermsLIST::deleteListNode(string argType, string arg) {
+
+	TermsListNode* curNode = head;
+	TermsListNode* prevNode = head;
+	int isDelete = 0;
+
+	while(curNode != NULL) {
+
+		TermsBST* curTBST = curNode->getTBST();
+		curTBST->initDeleteCount();
+		curTBST->traversalBSTTerms(curTBST->getRoot(), argType, arg);
+			
+		int deleteCount = curTBST->getDeleteCount();
+		for(int i = 0; i < deleteCount; i++) {
+			curNode->decreaseMCount();
+			++isDelete;
+		}
+
+		if(curNode->getMCount() == 0) {
+
+			if(curNode == head) {
+				if(curNode->getNext() != NULL)
+					head == curNode->getNext();
+				else
+					head = NULL;
+			}
+			else {
+				if(curNode->getNext() != NULL)
+					prevNode->setNext(curNode->getNext());
+				else
+					prevNode->setNext(NULL);
+			}
+			delete curNode;
+		}	
+		prevNode = curNode;
+		curNode = curNode->getNext();
+	}
+	if(isDelete == 0)
+		return false;
+	return true;
+}

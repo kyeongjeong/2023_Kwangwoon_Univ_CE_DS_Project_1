@@ -30,7 +30,10 @@ public:
 
 	void setLeft (TermsBSTNode* left)		{ this->left = left; }
 	void setRight(TermsBSTNode* right)		{ this->right = right; }
-	void setExpireDate(string expireDate) 	{ this->expireDate = expireDate; }
+	void setMName(string mName) 			{ this-> mName = mName; }
+	int setMAge(int mAge)					{ this->mAge = mAge; }
+	void setInfoDate(string infoDate) 		{ this-> infoDate = infoDate; }
+	void setExpireDate(string expireDate) 	{ this-> expireDate = expireDate; }
 
 	string getMName()		{ return mName; }
 	int getMAge()			{ return mAge; }

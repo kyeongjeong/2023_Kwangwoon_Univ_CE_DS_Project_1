@@ -42,37 +42,21 @@ void NameBST::insertBSTNode(string mName, int mAge, string infoDate, string expi
 	}
 }
 
-NameBSTNode* NameBST::searchBSTNode(string argType, string arg) {
+NameBSTNode* NameBST::searchBSTNode(string mName) {
 
 	NameBSTNode* curNode = root;
+	while(curNode != NULL) {
 
-	if(argType == "NAME") {
+		if(mName < curNode->getMName()) 
+			curNode = curNode->getLeft();
 
-		while(curNode != NULL) {
+		else if(mName > curNode->getMName())	
+			curNode = curNode->getRight();
 
-			if(arg < curNode->getMName()) 
-				curNode = curNode->getLeft();
-			else if(arg > curNode->getMName())	
-				curNode = curNode->getRight();
-			else 
-				return curNode;
-		}
-		return NULL;
-	}	
-
-	if(argType == "DATE") {
-
-		while(curNode != NULL) {
-
-			if(arg < curNode->getMName()) 
-				curNode = curNode->getLeft();
-			else if(arg > curNode->getMName())	
-				curNode = curNode->getRight();
-			else 
-				return curNode;
-		}
-		return NULL;
+		else 
+			return curNode;
 	}
+	return NULL;
 }
 
 NameBSTNode* NameBST::searchPrevBSTNode(NameBSTNode* curNode) {
@@ -83,9 +67,10 @@ NameBSTNode* NameBST::searchPrevBSTNode(NameBSTNode* curNode) {
 	NameBSTNode* prevNode = root;
 	while(prevNode != NULL) {
 
-		if(prevNode->getLeft()->getMName() == curNode->getMName() || prevNode->getRight()->getMName() == curNode->getMName())
+		if((prevNode->getLeft() != NULL) && ((prevNode->getLeft())->getMName() == curNode->getMName()) )
 			return prevNode;
-
+		else if((prevNode->getRight() != NULL) && ((prevNode->getRight())->getMName() == curNode->getMName()))
+			return prevNode;
 		else if(prevNode->getMName() > curNode->getMName())
 			prevNode = prevNode->getLeft();
 			
@@ -97,7 +82,7 @@ NameBSTNode* NameBST::searchPrevBSTNode(NameBSTNode* curNode) {
 
 void NameBST::printBSTNode(NameBSTNode* curNode, ofstream* flog) {
 
-	string memberInfo;
+ 	string memberInfo;
 	if(curNode != NULL) {
 
 		printBSTNode(curNode->getLeft(), flog);
@@ -107,88 +92,103 @@ void NameBST::printBSTNode(NameBSTNode* curNode, ofstream* flog) {
 	}
 }
 
-void NameBST::deleteBSTNode(string argType, string arg) {
-	
-	if(argType == "DATE") {
-		;
+bool NameBST::traversalBSTTerms(NameBSTNode* curNode, string expireDate, bool isExist) {
+
+	if(curNode != NULL) {
+		traversalBSTTerms(curNode->getLeft(), expireDate, isExist);
+		if(curNode->getExpireDate() < expireDate) {
+			
+			deleteBSTNode(curNode->getMName());
+			isExist = true;
+		}
+		traversalBSTTerms(curNode->getRight(), expireDate, isExist);
 	}
-	else if(argType == "NAME") {
+	return isExist;
+}
 
-		NameBSTNode* curNode = searchBSTNode(argType, arg);
-		NameBSTNode* prevNode = searchPrevBSTNode(curNode);
+bool NameBST::deleteBSTNode(string arg) {
 
-		if((curNode->getLeft() == NULL) && curNode->getRight() == NULL) {
+	NameBSTNode *curNode = searchBSTNode(arg);
+	if(curNode == NULL) 
+		return false;
+	NameBSTNode *prevNode = searchPrevBSTNode(curNode);
 
-			if(curNode == root) 
-				root = NULL;
+	if ((curNode->getLeft() == NULL) && curNode->getRight() == NULL) {
 
-			else if(prevNode->getLeft() == curNode)
-				prevNode->setLeft(NULL);
+		if (curNode == root)
+			root = NULL;
 
-			else if(prevNode->getRight() == curNode)
-				prevNode->setRight(NULL);
-		}
-		else if(curNode->getLeft() == NULL) {
+		else if (prevNode->getLeft() == curNode)
+			prevNode->setLeft(NULL);
 
-			if(curNode == root)
-				root = curNode->getRight();
-			
-			else if(prevNode->getLeft() == curNode)
-				prevNode->setLeft(curNode->getRight());
+		else if (prevNode->getRight() == curNode)
+			prevNode->setRight(NULL);
 
-			else
-				prevNode->setRight(curNode->getRight());
-		}
-		else if(curNode->getRight() == NULL) {
-			
-			if(curNode == root)
-				root = curNode->getLeft(); 
-			
-			else if(prevNode->getLeft() == curNode)
-				prevNode->setLeft(curNode->getLeft());
+		delete curNode;
+		return true;
+	}
 
-			else
-				prevNode->setRight(curNode->getLeft());
-		}
-		else {
+	else if (curNode->getLeft() == NULL) {
 
-			NameBSTNode* minNode = curNode->getRight();
-			NameBSTNode* minPrevNode;
+		if (curNode == root)
+			root = curNode->getRight();
 
-			if(minNode->getLeft() != NULL) {
-				while(minNode->getLeft()->getLeft() != NULL)
-					minNode = minNode->getLeft();
-			}
+		else if (prevNode->getLeft() == curNode)
+			prevNode->setLeft(curNode->getRight());
 
-			if(minNode->getLeft() != NULL) {
-				minPrevNode = minNode;
+		else
+			prevNode->setRight(curNode->getRight());
+
+		delete curNode;
+		return true;
+	}
+
+	else if (curNode->getRight() == NULL) {
+
+		if (curNode == root)
+			root = curNode->getLeft();
+
+		else if (prevNode->getLeft() == curNode)
+			prevNode->setLeft(curNode->getLeft());
+
+		else
+			prevNode->setRight(curNode->getLeft());
+
+		delete curNode;
+		return true;
+	}
+
+	else {
+
+		NameBSTNode *minNode = curNode->getRight();
+		NameBSTNode *minPrevNode;
+
+		if (minNode->getLeft() != NULL) {
+			while (minNode->getLeft()->getLeft() != NULL)
 				minNode = minNode->getLeft();
-			}
-			else
-				minPrevNode = curNode;
-			
-			if(curNode == root)
-				root = minNode;
-			else {
-
-				if(prevNode->getLeft() == curNode)
-					prevNode->setLeft(minNode);
-				else
-					prevNode->setRight(minNode);
-				
-				if((minNode->getRight() != NULL) && (curNode != minPrevNode)) {
-
-					if(minNode -> getRight() != NULL) {
-
-						minPrevNode->setRight(minNode->getRight());
-						minPrevNode->setLeft(NULL);
-						minNode->setRight(minPrevNode);
-					}
-				}
-			}
-			minNode->setLeft(curNode->getLeft());
-			delete curNode;
 		}
+
+		if (minNode->getLeft() != NULL) {
+			minPrevNode = minNode;
+			minNode = minNode->getLeft();
+		}
+		else
+			minPrevNode = curNode;
+
+		curNode->setMName(minNode->getMName());
+		curNode->setMAge(minNode->getMAge());
+		curNode->setInfoDate(minNode->getInfoDate());
+		curNode->setExpireDate(minNode->getExpireDate());
+		curNode->setTermsType(minNode->getTermsType());
+
+		if((minNode->getRight() != NULL) || (curNode != minPrevNode))
+			minPrevNode->setLeft(minNode->getRight());
+		else if(curNode == minPrevNode)
+			minPrevNode->setRight(minNode->getRight());
+		else	
+			minPrevNode->setRight(NULL);
+
+		delete minNode;
+		return true;
 	}
-	return;
 }

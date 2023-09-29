@@ -48,10 +48,15 @@ void Manager::run(const char* command)
         }
         else if(cmd == "PRINT") {
             if(!PRINT(&nBST, &tLIST))
-            return;
+                return;
         }
         else if(cmd == "DELETE") {
-
+            if(!DELETE(&nBST, &tLIST))
+                return;
+        }
+        else if(cmd == "EXIT") {
+            EXIT(&mQueue, &nBST, &tLIST);
+            return;
         }
         else {
             PrintErrorCode(1000);
@@ -214,7 +219,7 @@ bool Manager::SEARCH(NameBST* nBST) {
     string mName;
     fcmd >> mName;
 
-    NameBSTNode* curNode = nBST->searchBSTNode("NAME", mName);
+    NameBSTNode* curNode = nBST->searchBSTNode(mName);
     if(curNode == NULL) {
         PrintErrorCode(400);
         return true;
@@ -264,4 +269,48 @@ bool Manager::PRINT(NameBST* nBST, TermsLIST* tLIST) {
     return true;
 }
 
-// DELETE
+bool Manager::DELETE(NameBST* nBST, TermsLIST* tLIST) {
+
+    if((nBST->getRoot() == NULL) || (tLIST->getHead() == NULL)) {
+        PrintErrorCode(600);
+        return true;
+    }
+
+    string argType, arg;
+    fcmd >> argType >> arg;
+
+    if(argType == "NAME") {
+        
+        if(!nBST->deleteBSTNode(arg)) {
+            PrintErrorCode(600);
+            return true;
+        }
+        if(!tLIST->deleteListNode(argType, arg)) {
+            PrintErrorCode(600);
+            return true;
+        }
+    }
+    else if(argType == "DATE") {
+
+        if(!nBST->traversalBSTTerms(nBST->getRoot(), arg, false)) {
+            PrintErrorCode(600);
+            return true;
+        }
+        if(!tLIST->deleteListNode(argType, arg)) {
+            PrintErrorCode(600);
+            return true;
+        }
+    }
+    else {
+        PrintErrorCode(600);
+        return true;
+    }
+
+    PrintSuccess("DELETE");
+    return true;
+}
+
+void Manager::EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
+
+    ;
+}

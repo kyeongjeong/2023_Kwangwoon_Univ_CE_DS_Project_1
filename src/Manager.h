@@ -28,7 +28,8 @@ public:
 	bool QPOP(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST);
 	bool SEARCH(NameBST* nBST);
 	bool PRINT(NameBST* nBST, TermsLIST* tLIST);
-	// DELETE
+	bool DELETE(NameBST* nBST, TermsLIST* tLIST);
+	void EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST);
 
 	string calculateExpireDate(string infoDate, string termsType);
 };
