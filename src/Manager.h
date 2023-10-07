@@ -29,7 +29,7 @@ public:
 	bool SEARCH(NameBST* nBST);
 	bool PRINT(NameBST* nBST, TermsLIST* tLIST);
 	bool DELETE(NameBST* nBST, TermsLIST* tLIST);
-	void EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST);
+	bool EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST);
 
 	string calculateExpireDate(string infoDate, string termsType);
 };

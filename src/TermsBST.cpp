@@ -105,6 +105,7 @@ int TermsBST::traversalBSTTerms(TermsBSTNode* curNode, string argType, string ar
 			if(curNode->getMName() == arg) {
 				deleteBSTNode(curNode->getExpireDate());
 				increaseDeleteCount();
+				return deleteCount;
 			}
 		}
 		else if(argType == "DATE") {

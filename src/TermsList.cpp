@@ -1,18 +1,9 @@
 #include "TermsList.h"
 
-TermsLIST::TermsLIST(): head(nullptr)
-{
-	
-}
-TermsLIST::~TermsLIST()
-{
+TermsLIST::TermsLIST(): head(nullptr) {}
+TermsLIST::~TermsLIST() {}
 
-}
-
-TermsListNode* TermsLIST::getHead()
-{
-	return head;
-}
+TermsListNode* TermsLIST::getHead() { return head; }
 
 void TermsLIST::insertListNode(string mName, int mAge, string infoDate, string expireDate, string termsType) {
 
@@ -84,7 +75,7 @@ bool TermsLIST::deleteListNode(string argType, string arg) {
 
 			if(curNode == head) {
 				if(curNode->getNext() != NULL)
-					head == curNode->getNext();
+					head = curNode->getNext();
 				else
 					head = NULL;
 			}

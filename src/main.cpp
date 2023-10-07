@@ -2,7 +2,7 @@
 
 int main()
 {
-	Manager manager;
-	manager.run("command.txt");
-	return 0;
+    Manager manager;
+    manager.run("command.txt"); // Execute the run function of the manager object
+    return 0;
 }

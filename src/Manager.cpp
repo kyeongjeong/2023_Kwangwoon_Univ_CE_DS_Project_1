@@ -11,12 +11,12 @@ Manager::~Manager()
 
 void Manager::run(const char* command)
 {
-    // Open command & log file
-    fcmd.open(command);
-    flog.open("log.txt");
-    if (!fcmd)
+    // Open the command & log file
+    fcmd.open(command); // Open the command.txt file
+    flog.open("log.txt"); // Open the log.txt file
+    if (!fcmd) // If the file doesn't exist or cannot be opened
     {
-        flog << "Fail to open command file" << endl;
+        flog << "Fail to open the command file" << endl;
         exit(-1);
     }
 
@@ -24,45 +24,45 @@ void Manager::run(const char* command)
     NameBST nBST;
     TermsLIST tLIST;
 
-    // Run command
-    while(!fcmd.eof()) {
-        
-        string cmd;
-        fcmd >> cmd;
+    // Run commands
+    while (!fcmd.eof()) { // Repeat until the end of the command.txt file is reached
 
-        if(cmd == "LOAD") {          
-            if(!(LOAD(&mQueue)))
-                return;
+        string cmd;
+        fcmd >> cmd; // Read the command
+
+        if (cmd == "LOAD") { // If the command is LOAD
+            if (!(LOAD(&mQueue))) // If the LOAD function returns false, exit the program
+                break;
         }
-        else if(cmd == "ADD") {
-            if(!ADD(&mQueue))
-                return;
+        else if (cmd == "ADD") { // If the command is ADD
+            if (!ADD(&mQueue)) // If the ADD function returns false, exit the program
+                break;
         }
-        else if(cmd == "QPOP") {
-            if(!QPOP(&mQueue, &nBST, &tLIST)) 
-                return;
+        else if (cmd == "QPOP") { // If the command is QPOP
+            if (!QPOP(&mQueue, &nBST, &tLIST)) // If the QPOP function returns false, exit the program
+                break;
         }
-        else if(cmd == "SEARCH") {
-            if(!SEARCH(&nBST)) 
-                return;
+        else if (cmd == "SEARCH") { // If the command is SEARCH
+            if (!SEARCH(&nBST)) // If the SEARCH function returns false, exit the program
+                break;
         }
-        else if(cmd == "PRINT") {
-            if(!PRINT(&nBST, &tLIST))
-                return;
+        else if (cmd == "PRINT") { // If the command is PRINT
+            if (!PRINT(&nBST, &tLIST)) // If the PRINT function returns false, exit the program
+                break;
         }
-        else if(cmd == "DELETE") {
-            if(!DELETE(&nBST, &tLIST))
-                return;
+        else if (cmd == "DELETE") { // If the command is DELETE
+            if (!DELETE(&nBST, &tLIST)) // If the DELETE function returns false, exit the program
+                break;
         }
-        else if(cmd == "EXIT") {
-            EXIT(&mQueue, &nBST, &tLIST);
-            return;
+        else if (cmd == "EXIT") { // If the command is EXIT
+            break; // Exit the program after executing the EXIT function
         }
-        else {
+        else { // If the command is invalid
             PrintErrorCode(1000);
         }
-    } 
+    }
 
+    EXIT(&mQueue, &nBST, &tLIST); // Execute the EXIT function
     fcmd.close();
     flog.close();
     return;
@@ -87,12 +87,14 @@ bool Manager::LOAD(MemberQueue* mQueue) {
     fdata.open("data.txt");
     if(!fdata) {
         PrintErrorCode(100);
+        return true;
     }
 
     string mName, infoDate, termsType;
     int mAge;
     if(!(*mQueue).empty()) {
         PrintErrorCode(100);
+        return true;
     }
 
     while(!fdata.eof()) {
@@ -100,8 +102,10 @@ bool Manager::LOAD(MemberQueue* mQueue) {
         fdata >> mName >> mAge >> infoDate >> termsType;
         if(!(*mQueue).full()) 
             (*mQueue).push(mName, mAge, infoDate, termsType);
-        else
+        else {
+            PrintErrorCode(100);
             return false;
+        }
     }
 
     MemberQueueNode* curNode = (*mQueue).front();
@@ -157,10 +161,18 @@ bool Manager::ADD(MemberQueue* mQueue) {
         }
     }
 
+    dataStream >> token;
+    if (dataStream) {
+        PrintErrorCode(200);
+        return true;
+    }
+
     if(!(*mQueue).full()) 
         (*mQueue).push(mName, mAge, infoDate, termsType); 
-    else
+    else {
+        PrintErrorCode(200);
         return false;
+    }
 
     flog << "===== ADD =====" << endl; 
     flog << mName << "/" << mAge << "/" << infoDate << "/" << termsType << endl;
@@ -258,6 +270,7 @@ bool Manager::PRINT(NameBST* nBST, TermsLIST* tLIST) {
 
         TermsListNode* tListNode = tLIST->searchListNode(argType);
         TermsBST* tBST = tListNode->getTBST();
+        //flog << "member Count : " << tListNode->getMCount() << endl;
         tBST->printBSTNode(tBST->getRoot(), &flog);
 
         flog << "===============" << endl << endl;
@@ -272,6 +285,8 @@ bool Manager::PRINT(NameBST* nBST, TermsLIST* tLIST) {
 bool Manager::DELETE(NameBST* nBST, TermsLIST* tLIST) {
 
     if((nBST->getRoot() == NULL) || (tLIST->getHead() == NULL)) {
+        string temp1, temp2;
+        fcmd >> temp1 >> temp2;
         PrintErrorCode(600);
         return true;
     }
@@ -280,7 +295,7 @@ bool Manager::DELETE(NameBST* nBST, TermsLIST* tLIST) {
     fcmd >> argType >> arg;
 
     if(argType == "NAME") {
-        
+
         if(!nBST->deleteBSTNode(arg)) {
             PrintErrorCode(600);
             return true;
@@ -310,7 +325,24 @@ bool Manager::DELETE(NameBST* nBST, TermsLIST* tLIST) {
     return true;
 }
 
-void Manager::EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
+bool Manager::EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
 
-    ;
+    if(!mQueue->empty()) {
+
+        MemberQueueNode* curNode = (*mQueue).front();
+        while(curNode != NULL) {         
+            curNode = (*mQueue).front();
+            if(curNode != NULL)
+                mQueue->pop();
+        }
+    }
+
+    // if(nBST->getRoot() != NULL)
+    //     nBST->traversalBSTTerms(nBST->getRoot(), "9999-99-99", false);
+    
+    // if(tLIST->getHead() != NULL)
+    //     tLIST->deleteListNode("DATE", "9999-99-99");
+    
+    PrintSuccess("EXIT");
+    return false;
 }

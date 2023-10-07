@@ -101,7 +101,8 @@ bool NameBST::traversalBSTTerms(NameBSTNode* curNode, string expireDate, bool is
 			deleteBSTNode(curNode->getMName());
 			isExist = true;
 		}
-		traversalBSTTerms(curNode->getRight(), expireDate, isExist);
+		if(curNode != NULL)
+			traversalBSTTerms(curNode->getRight(), expireDate, isExist);
 	}
 	return isExist;
 }
