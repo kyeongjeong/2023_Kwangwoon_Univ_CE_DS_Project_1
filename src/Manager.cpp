@@ -345,6 +345,11 @@ bool Manager::EXIT(MemberQueue* mQueue, NameBST* nBST, TermsLIST* tLIST) {
                 mQueue->pop(); // Pop the front node from the MemberQueue
         }
     }
+
+    if(nBST->getRoot() != NULL)
+        nBST->traversalBSTTerms(nBST->getRoot(), "9999-99-99", false);
+    if(tLIST->getHead() != NULL)
+        tLIST->deleteListNode("DATE", "9999-99-99");
     
     PrintSuccess("EXIT"); // Print a success message for EXIT
     return false; // Return false to indicate the program should exit

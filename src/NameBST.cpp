@@ -90,15 +90,13 @@ bool NameBST::traversalBSTTerms(NameBSTNode* curNode, string expireDate, bool is
 
     if (curNode != NULL) {
         traversalBSTTerms(curNode->getLeft(), expireDate, isExist); // Recursively traverse the left subtree
+        traversalBSTTerms(curNode->getRight(), expireDate, isExist); // Recursively traverse the right subtree
         
         if (curNode->getExpireDate() < expireDate) { // Check if the current node's expiration date is earlier than the specified date
             
             deleteBSTNode(curNode->getMName()); // If it is, delete the current node from the tree
             isExist = true; // Set the flag to indicate that a node was deleted
         }
-        
-        if (curNode != NULL) // Check if the current node is not NULL
-            traversalBSTTerms(curNode->getRight(), expireDate, isExist); // Recursively traverse the right subtree
     }
     return isExist; // Return the flag indicating whether any nodes were deleted during traversal
 }

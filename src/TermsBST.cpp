@@ -93,6 +93,7 @@ int TermsBST::traversalBSTTerms(TermsBSTNode* curNode, string argType, string ar
         TermsBSTNode* curRightNode = curNode->getRight(); // Reference to the current node's right child
 
         traversalBSTTerms(curLeftNode, argType, arg); // Recursively traverse the left subtree
+        traversalBSTTerms(curRightNode, argType, arg); // Recursively traverse the right subtree
 
         if (argType == "NAME") { // If the argument type is "NAME"
             if (curNode->getMName() == arg) { // If the current node's name matches the argument
@@ -109,7 +110,6 @@ int TermsBST::traversalBSTTerms(TermsBSTNode* curNode, string argType, string ar
                 increaseDeleteCount(); // Increment the delete count
             }
         }
-        traversalBSTTerms(curRightNode, argType, arg); // Recursively traverse the right subtree
     }
     return deleteCount; // Return the delete count
 }
